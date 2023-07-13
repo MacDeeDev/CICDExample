@@ -43,14 +43,29 @@ jobs:
         
       - uses: actions/upload-artifact@v2
         with:
-          name: Build
+          name: build-WebGL
+          path: build/WebGL
+
+
+  deployPages:
+    needs: build
+    name: Deploy to Github Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-WebGL
           path: build
+      
+      - name: Display the folder structure
+        run: ls -R
+        working-directory: build/WebGL
 
-
-        # Build
-      # - name: Build project
-      #   uses: game-ci/unity-builder@v2
-      #   env:
-      #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-      #   with:
-      #     targetPlatform: WebGL
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/WebGL # The folder the action should deploy.  
