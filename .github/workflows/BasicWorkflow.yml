@@ -8,7 +8,11 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: 
+        -"main" 
+    types:
+      - closed
+  
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,6 +21,9 @@ on:
 jobs:
   # Build orkflow - better name preferable
   build:
+    # only build if the pr is closed and the changes merged
+    if: github.event.pull_request.merged == true
+
     name: Build the unity project
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -26,7 +33,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      # Creates a cache of the build for subsequent builds - I think...
+      # Creates a cache of the build for subsequent builds - I think...but it's not being used anywhere
+      # Note the path, key, and restore-keys attributes - rename/refactor
       - uses: actions/cache@v2
         with:
           path: path/to/your/project/Library
@@ -35,8 +43,10 @@ jobs:
             Library-MyProjectName-
             Library-
     
-      # Build
+      # Build WebGL
       - uses: game-ci/unity-builder@v2
+       
+        # Environment Variables/Secrets for the Unity License (Personal), Email, and Password 
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
