@@ -63,6 +63,40 @@ jobs:
           path: build/WebGL
 
   # Deploy 
+  deployItch:
+    needs: build
+    name: Deploy to itch.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with: 
+          name: build-WebGL
+          path: build
+
+      - name: Display the folder structure
+        run: ls -R
+        working-directory: build/WebGL
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+         branch: itch-io
+         folder: build/WebGL
+
+      - uses: manleydev/butler-publish-itchio-action@master
+        env:
+           BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
+           CHANNEL: HTML
+           ITCH_GAME: CICDExample
+           ITCH_USER: Freens
+           BRANCH: itch-io
+           PACKAGE: build/WebGL
+
+      
+
   deployPages:
     needs: build
     name: Deploy to Github Pages
