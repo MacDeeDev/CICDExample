@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
+    
 
     //CLASS VARIABLES
     public new Camera camera;
+    public DynamicJoystick joystick;
     private float speed = 2.0f;
 
 
@@ -25,7 +28,7 @@ public class CameraController : MonoBehaviour
         //MOVE: the camera left to right, up and down, forward and back
 
         //move up or forward w/shift key
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) || joystick.Vertical > 0)
         {
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
@@ -35,13 +38,13 @@ public class CameraController : MonoBehaviour
         }
 
         //move left
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) || joystick.Horizontal < 0)
         {
             gameObject.transform.position += Vector3.left * speed * Time.deltaTime;
         }
 
         //move down or back w/shift key
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || joystick.Vertical < 0)
         {
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
@@ -52,7 +55,7 @@ public class CameraController : MonoBehaviour
         }
 
         //move right
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) || joystick.Horizontal > 0)
         {
             gameObject.transform.position += Vector3.right * speed * Time.deltaTime;
         }
