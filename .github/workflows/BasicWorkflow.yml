@@ -53,7 +53,7 @@ jobs:
         run: | 
           git lfs pull
           git add *
-          git rest --hard
+          git reset --hard
 
 
       - name: Restore Library
