@@ -33,17 +33,37 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
       
       # Creates a cache of the build for subsequent builds - I think...but it's not being used anywhere
       # Note the path, key, and restore-keys attributes - rename/refactor
-      - uses: actions/cache@v2
+      - name: restore cache
+        uses: actions/cache@v2
+        id: lfs-cache
         with:
-          path: path/to/your/project/Library
-          key: Library-MyProjectName-TargetPlatform
-          restore-keys: |
-            Library-MyProjectName-
-            Library-
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+      
+      - name: Git LFS Pull
+        run: | 
+          git lfs pull
+          git add *
+          git rest --hard
+
+
+      - name: Restore Library
+        uses: actions/cache@v2
+        with: 
+            path: Library
+            key: Library-test-project
+            restore-keys: |
+              Library-test-project-
+              Library-
     
       # Build WebGL
       - uses: game-ci/unity-builder@v2
