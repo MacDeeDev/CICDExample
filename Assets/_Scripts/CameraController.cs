@@ -32,27 +32,27 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        move();
-        look();
+        Move();
+        Look();
     }
     
-    private void look()
+    private void Look()
     {
-        if(lookJoystick.Horizontal != 0 || lookJoystick.Vertical != 0)
+        if (lookJoystick.Horizontal != 0 || lookJoystick.Vertical != 0)
         {
-        xRotation = lookJoystick.Vertical * -1;
-        yRotation = lookJoystick.Horizontal;
+            xRotation = lookJoystick.Vertical * -1;
+            yRotation = lookJoystick.Horizontal;
 
-        Vector2 wantedVelocity = new Vector2(xRotation, yRotation) * sensitivity;
+            Vector2 wantedVelocity = new Vector2(xRotation, yRotation) * sensitivity;
         
-        wantedVelocity += wantedVelocity * Time.deltaTime;
+            wantedVelocity += wantedVelocity * Time.deltaTime;
 
-        transform.localEulerAngles += new Vector3 (wantedVelocity.x, wantedVelocity.y, 0);
+            transform.localEulerAngles += new Vector3 (wantedVelocity.x, wantedVelocity.y, 0);
         }   
     }
 
     //MOVE: the camera left to right, forward and back
-    private void move()
+    private void Move()
     {
         verticleMultiplier = VerticalMultiplier();
         horizontalMultiplier = HorizontalMultiplier();
@@ -85,7 +85,7 @@ public class CameraController : MonoBehaviour
     //allows for dynamic fwd/backward joystick movement as well as keyboard movement
     private float VerticalMultiplier ()
     {
-        if(moveJoystick.Vertical == 0)
+        if (moveJoystick.Vertical == 0)
         {
             return 1;
         }
@@ -99,7 +99,7 @@ public class CameraController : MonoBehaviour
     //allows for dynamic left/right joystick movement as well as keyboard movement
     private float HorizontalMultiplier ()
     {
-        if(moveJoystick.Horizontal == 0)
+        if (moveJoystick.Horizontal == 0)
         {
             return 1;
         }
