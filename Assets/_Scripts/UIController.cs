@@ -24,7 +24,5 @@ public class UIController : MonoBehaviour
         posZ = mainCamera.transform.position.z.ToString("0.00");
 
         centreText.text = string.Format("X: {0} | Y: {1} | Z: {2}", posX, posY, posZ);
-        
-
     }
 }
