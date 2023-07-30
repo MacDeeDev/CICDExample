@@ -8,9 +8,9 @@ public class UIController : MonoBehaviour
     public GameObject mainCamera;
     public TextMeshProUGUI  centreText;
 
-    private string posX, posY, posZ;
+    private string posX, posY, posZ, FPS;
 
-    float deltaTime = 0f;
+    float frameDuration = 0f;
 
     
 
@@ -24,12 +24,12 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        frameDuration = 1f / Time.unscaledDeltaTime;
         posX = mainCamera.transform.position.x.ToString("0.00");
         posY = mainCamera.transform.position.y.ToString("0.00");
         posZ = mainCamera.transform.position.z.ToString("0.00");
+        FPS = frameDuration.ToString("0");
 
-        deltaTime += (Time.deltaTime - deltaTime) * .1f;
-
-        centreText.text = string.Format("X: {0} | Y: {1} | Z: {2} | FPS: {3}", posX, posY, posZ, deltaTime);
+        centreText.text = string.Format("X: {0} | Y: {1} | Z: {2} | FPS: {3}", posX, posY, posZ, FPS);
     }
 }
