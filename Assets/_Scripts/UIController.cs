@@ -10,6 +10,11 @@ public class UIController : MonoBehaviour
 
     private string posX, posY, posZ;
 
+    float deltaTime = 0f;
+
+    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +28,8 @@ public class UIController : MonoBehaviour
         posY = mainCamera.transform.position.y.ToString("0.00");
         posZ = mainCamera.transform.position.z.ToString("0.00");
 
-        centreText.text = string.Format("X: {0} | Y: {1} | Z: {2}", posX, posY, posZ);
+        deltaTime += (Time.deltaTime - deltaTime) * .1f;
+
+        centreText.text = string.Format("X: {0} | Y: {1} | Z: {2} | FPS: {3}", posX, posY, posZ, deltaTime);
     }
 }
