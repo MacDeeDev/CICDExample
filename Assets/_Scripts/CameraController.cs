@@ -36,6 +36,7 @@ public class CameraController : MonoBehaviour
         Look();
     }
     
+    //CLEAN UP:  commments, variable naming
     private void Look()
     {
         if (lookJoystick.Horizontal != 0 || lookJoystick.Vertical != 0)
