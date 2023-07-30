@@ -4,16 +4,17 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     //Game Objects for Reference Data
-
     public GameObject mainCamera;
-    public TextMeshProUGUI  centreText;
-
+    
+    //Position Variables
+    public TextMeshProUGUI  tmpXPos, tmpYPos, tmpZPos;
     private string posX, posY, posZ, FPS;
 
-    float frameDuration = 0f;
-
-    
-
+    //Frame Rate Variables
+    public TextMeshProUGUI  tmpFPS;
+    private float frameDuration = 0f;
+    private float fpsCalcCooldown = 2f;
+    private float fpsCalcTimeSinceLastUpdate = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +25,47 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        frameDuration = 1f / Time.unscaledDeltaTime;
-        posX = mainCamera.transform.position.x.ToString("0.00");
-        posY = mainCamera.transform.position.y.ToString("0.00");
-        posZ = mainCamera.transform.position.z.ToString("0.00");
-        FPS = frameDuration.ToString("0");
 
-        centreText.text = string.Format("X: {0} | Y: {1} | Z: {2} | FPS: {3}", posX, posY, posZ, FPS);
+        SetTextPositionValues();
+        SetTextFPSValue();
     }
+
+
+    //FPS Handling
+
+    private void SetTextFPSValue()
+    {
+        //Refresh FPS value every 2 seconds
+        fpsCalcTimeSinceLastUpdate += Time.deltaTime;
+        string strCalTime = fpsCalcTimeSinceLastUpdate.ToString();
+        Debug.Log("FPS Last Update Time: " + strCalTime);
+
+        if(fpsCalcTimeSinceLastUpdate >= fpsCalcCooldown)
+        {
+            frameDuration = 1f / Time.unscaledDeltaTime;
+            
+            FPS = frameDuration.ToString("0");
+            tmpFPS.text = string.Format(FPS);
+            
+            fpsCalcTimeSinceLastUpdate = 0f;
+        }
+
+    }
+
+    //Position Handling
+    private void SetTextPositionValues()
+    {
+        //Get X, Y, Z coordinates from camera
+        posX = mainCamera.transform.position.x.ToString("0.0");
+        posY = mainCamera.transform.position.y.ToString("0.0");
+        posZ = mainCamera.transform.position.z.ToString("0.0");
+        
+        //Set Text Mesh Pro (TMP) text values
+        tmpXPos.text = string.Format(posX);
+        tmpYPos.text = string.Format(posY);
+        tmpZPos.text = string.Format(posZ);
+
+    }
+
+
 }
