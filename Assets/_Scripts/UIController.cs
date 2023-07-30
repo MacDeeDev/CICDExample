@@ -37,8 +37,6 @@ public class UIController : MonoBehaviour
     {
         //Refresh FPS value every 2 seconds
         fpsCalcTimeSinceLastUpdate += Time.deltaTime;
-        string strCalTime = fpsCalcTimeSinceLastUpdate.ToString();
-        Debug.Log("FPS Last Update Time: " + strCalTime);
 
         if(fpsCalcTimeSinceLastUpdate >= fpsCalcCooldown)
         {
