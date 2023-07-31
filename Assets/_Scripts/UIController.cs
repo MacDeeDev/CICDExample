@@ -13,8 +13,8 @@ public class UIController : MonoBehaviour
     //Frame Rate Variables
     public TextMeshProUGUI  tmpFPS;
     private float frameDuration = 0f;
-    private float fpsCalcCooldown = 2f;
-    private float fpsCalcTimeSinceLastUpdate = 2f;
+    private float fpsCalcCooldown = 0.5f;
+    private float fpsCalcTimeSinceLastUpdate = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,9 +38,9 @@ public class UIController : MonoBehaviour
         //Refresh FPS value every 2 seconds
         fpsCalcTimeSinceLastUpdate += Time.deltaTime;
 
-        if(fpsCalcTimeSinceLastUpdate >= fpsCalcCooldown)
+        if  (fpsCalcTimeSinceLastUpdate >= fpsCalcCooldown)
         {
-            frameDuration = 1f / Time.unscaledDeltaTime;
+            frameDuration = 1f / Time.deltaTime;
             
             FPS = frameDuration.ToString("0");
             tmpFPS.text = string.Format(FPS);
