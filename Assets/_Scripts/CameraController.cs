@@ -32,8 +32,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Look();
+        //Move();
+        //Look();
     }
     
     //CLEAN UP:  commments, variable naming
