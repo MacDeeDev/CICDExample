@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        camera = gameObject.GetComponent<Camera>();
+        camera = gameObject.GetComponentInChildren<Camera>();
     }
 
     // Update is called once per frame
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Look();
+       
     }
 
     private void Look()
@@ -42,7 +43,11 @@ public class PlayerController : MonoBehaviour
         
             wantedVelocity += wantedVelocity * Time.deltaTime;
 
-            transform.localEulerAngles += new Vector3 (wantedVelocity.x, wantedVelocity.y, 0);
+            //rotates parent object left & right 
+            gameObject.transform.localEulerAngles += new Vector3 (gameObject.transform.rotation.x, wantedVelocity.y, 0);
+
+            // rotates camera up and down
+            camera.transform.localEulerAngles += new Vector3 (wantedVelocity.x, 0, 0);
         }   
     }
 
@@ -60,13 +65,13 @@ public class PlayerController : MonoBehaviour
         //move left
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) || moveJoystick.Horizontal < 0)
         {
-            gameObject.transform.position += -transform.right * (speed * horizontalMultiplier) * Time.deltaTime;
+            gameObject.transform.position += transform.right * -(speed * horizontalMultiplier) * Time.deltaTime;
         }
 
         //move back
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || moveJoystick.Vertical < 0)
         {
-            gameObject.transform.position += -transform.forward * (speed * verticleMultiplier) * Time.deltaTime;
+            gameObject.transform.position += transform.forward * -(speed * verticleMultiplier) * Time.deltaTime;
         }
 
         //move right
@@ -103,4 +108,5 @@ public class PlayerController : MonoBehaviour
             return Mathf.Abs(moveJoystick.Horizontal);
         }
     }
+
 }
