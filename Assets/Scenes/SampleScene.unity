@@ -1315,6 +1315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4295d6b6b035d17438a84a1bb31b0d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMovement: {x: 0, y: 0}
+  isMoving: 0
   playerBody: {fileID: 1842719272}
   camera: {fileID: 963194227}
   moveJoystick: {fileID: 2080921138}
