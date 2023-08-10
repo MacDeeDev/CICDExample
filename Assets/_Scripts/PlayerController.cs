@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         HandleRotation();
         Look();
        
-       //Debug.Log("Movement: " + movement.ReadValue<Vector2>());
+       Debug.Log("Movement: " + movement.ReadValue<Vector2>());
     }
 
     private void Look()
