@@ -8,19 +8,23 @@ public class PlayerController : MonoBehaviour
     
     //New Input System
     private PlayerInputActions playerInputActions;  //C# class auto created/updated for the Input Action asset
+    
     private InputAction movement; //OnEable: bind movement action from thep layerInputAction object
-    public Vector2 currentMovement;
+    private Vector2 currentMovement;
+    
+    private InputAction rotation;
+    private InputAction mouseRotation;
+    private Vector2 currentRotationMovement;
+    private Vector2 currentMouseRotationMovement;
+    
     public bool isMoving   = false;
+    public bool isRotating = false;
     
     public GameObject playerBody;
     public new Camera camera;
-    public FixedJoystick moveJoystick;
-    public FixedJoystick lookJoystick;
     public float sensitivity = 0.5f; 
     public float speed = 10.0f;
 
-    private float xRotation;
-    private float yRotation;
 
     //Awake is called before start
     void Awake()
@@ -40,6 +44,26 @@ public class PlayerController : MonoBehaviour
             isMoving = false;
         };
 
+        //Bind the Rotation action to class variable
+        playerInputActions.Player.Rotation.performed += ctx => {
+            currentRotationMovement = ctx.ReadValue<Vector2>();
+            isRotating = true;
+        };
+
+        playerInputActions.Player.MouseRotation.performed += ctx => {
+            currentMouseRotationMovement = ctx.ReadValue<Vector2>();
+            
+        };
+
+        //Listen for Player.Rotation.cancelled and set isRotation to false
+        playerInputActions.Player.Rotation.canceled += ctx => {
+            isRotating = false;
+        };
+
+        playerInputActions.Player.MouseRotation.canceled += ctx => {
+            isRotating = false;
+        };
+
 
     }
 
@@ -48,6 +72,14 @@ public class PlayerController : MonoBehaviour
     {
         movement = playerInputActions.Player.Movement;
         movement.Enable();
+
+        rotation = playerInputActions.Player.Rotation;
+        rotation.Enable();
+
+        mouseRotation = playerInputActions.Player.MouseRotation;
+        mouseRotation.Enable();
+
+
     }
 
     //OnDisable is called when the component is toggled to false
@@ -55,6 +87,8 @@ public class PlayerController : MonoBehaviour
     {
         //Disable 
         movement.Disable();
+        rotation.Disable();
+        mouseRotation.Disable();
 
     }
 
@@ -69,28 +103,11 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleRotation();
-        Look();
+        HandleMouseRotation();
+        //Look();
        
-       Debug.Log("Movement: " + movement.ReadValue<Vector2>());
-    }
-
-    private void Look()
-    {
-        if (lookJoystick.Horizontal != 0 || lookJoystick.Vertical != 0)
-        {
-            xRotation = lookJoystick.Vertical * -1;
-            yRotation = lookJoystick.Horizontal;
-
-            Vector2 wantedVelocity = new Vector2(xRotation, yRotation) * sensitivity;
-        
-            wantedVelocity += wantedVelocity * Time.deltaTime;
-
-            //rotates parent object left & right 
-            gameObject.transform.localEulerAngles += new Vector3 (gameObject.transform.rotation.x, wantedVelocity.y, 0);
-
-            // rotates camera up and down
-            camera.transform.localEulerAngles += new Vector3 (wantedVelocity.x, 0, 0);
-        }   
+       //Debug.Log("Movement: " + movement.ReadValue<Vector2>());
+        Debug.Log("Rotation: " + rotation.ReadValue<Vector2>());
     }
 
     private void HandleMovement()
@@ -105,9 +122,37 @@ public class PlayerController : MonoBehaviour
     private void HandleRotation()
     {
 
+       if(isRotating)
+       {
+            Vector2 wantedVelocity = currentRotationMovement * sensitivity;
+            //rotates parent object left & right 
+            gameObject.transform.localEulerAngles += new Vector3 (gameObject.transform.rotation.x, wantedVelocity.x * Time.deltaTime, 0);
+
+            // rotates camera up and down
+            camera.transform.localEulerAngles += new Vector3 (wantedVelocity.y * Time.deltaTime, 0, 0);
+        }
     }
     
+    private void HandleMouseRotation()
+    {
+        //IF: the left mouse button isn't pressed, exit the method
+        if(!Mouse.current.leftButton.isPressed)
+        return;
+        
+        isRotating = true;
 
+        if(isRotating)
+       {
+            Vector2 wantedVelocity = currentMouseRotationMovement * sensitivity;
+            //rotates parent object left & right 
+            gameObject.transform.localEulerAngles += new Vector3 (gameObject.transform.rotation.x, wantedVelocity.x * Time.deltaTime, 0);
+
+            // rotates camera up and down
+            camera.transform.localEulerAngles += new Vector3 (wantedVelocity.y * Time.deltaTime, 0, 0);
+       }
+
+        
+    }
     
 
 }
