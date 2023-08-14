@@ -104,10 +104,9 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleRotation();
         HandleMouseRotation();
-        //Look();
        
-       //Debug.Log("Movement: " + movement.ReadValue<Vector2>());
-        Debug.Log("Rotation: " + rotation.ReadValue<Vector2>());
+        //Debug.Log("Movement: " + movement.ReadValue<Vector2>());
+        //Debug.Log("Rotation: " + rotation.ReadValue<Vector2>());
     }
 
     private void HandleMovement()
@@ -139,17 +138,15 @@ public class PlayerController : MonoBehaviour
         if(!Mouse.current.leftButton.isPressed)
         return;
         
-        isRotating = true;
+        //isRotating = true;
 
-        if(isRotating)
-       {
-            Vector2 wantedVelocity = currentMouseRotationMovement * sensitivity;
-            //rotates parent object left & right 
-            gameObject.transform.localEulerAngles += new Vector3 (gameObject.transform.rotation.x, wantedVelocity.x * Time.deltaTime, 0);
+        Vector2 wantedVelocity = currentMouseRotationMovement * sensitivity;
+        
+        //rotates parent object left & right 
+        gameObject.transform.localEulerAngles += new Vector3 (gameObject.transform.rotation.x, wantedVelocity.x * Time.deltaTime, 0);
 
-            // rotates camera up and down
-            camera.transform.localEulerAngles += new Vector3 (wantedVelocity.y * Time.deltaTime, 0, 0);
-       }
+        // rotates camera up and down
+        camera.transform.localEulerAngles += new Vector3 (wantedVelocity.y * Time.deltaTime, 0, 0);
 
         
     }
