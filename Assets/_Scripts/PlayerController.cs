@@ -32,40 +32,61 @@ public class PlayerController : MonoBehaviour
         //Instantiate  a new PlayerInput asset and assign to class variable
         playerInputActions = new PlayerInputActions();
 
-        //Bind the Movement action to class variable and Enable
-        playerInputActions.Player.Movement.performed += ctx => {
-            currentMovement = ctx.ReadValue<Vector2>();
-            isMoving = currentMovement.x != 0 || currentMovement.y != 0;
-        };
+        //SET INPUT ACTIONS TO METHODS (methods do not have brackets when assigned like this)
+        
+        //Listen for Movement Performed 
+        playerInputActions.Player.Movement.performed += SetActionPlayerMovementPerformed;
 
+        //Listen for Player Movement Cancelled
+        playerInputActions.Player.Movement.canceled += SetActionPlayerMovementCanceled; 
 
-        //Listen for Player.Movement.cancelled input action; set isMoving to false
-        playerInputActions.Player.Movement.canceled += ctx => {
-            isMoving = false;
-        };
+        //Listen for Rotation Performed
+        playerInputActions.Player.Rotation.performed += SetPlayerRotationPerformed; 
+        
+        //Listen for Mouse Rotation Performed
+        playerInputActions.Player.MouseRotation.performed += SetPlayerMouseRotationPerformed; 
 
-        //Bind the Rotation action to class variable
-        playerInputActions.Player.Rotation.performed += ctx => {
-            currentRotationMovement = ctx.ReadValue<Vector2>();
-            isRotating = true;
-        };
+        //Listen for Player Rotation Cancelled
+        playerInputActions.Player.Rotation.canceled += SetPlayerRotationCancelled;
 
-        playerInputActions.Player.MouseRotation.performed += ctx => {
-            currentMouseRotationMovement = ctx.ReadValue<Vector2>();
-            
-        };
-
-        //Listen for Player.Rotation.cancelled and set isRotation to false
-        playerInputActions.Player.Rotation.canceled += ctx => {
-            isRotating = false;
-        };
-
-        playerInputActions.Player.MouseRotation.canceled += ctx => {
-            isRotating = false;
-        };
-
+        //Listen for Mouse Rotation Cancelled
+        playerInputActions.Player.MouseRotation.canceled += SetPlayerMouseRotationCancelled;
 
     }
+
+    //Listener Setup Methods
+    private void SetActionPlayerMovementPerformed(InputAction.CallbackContext ctx)
+    {
+        currentMovement = ctx.ReadValue<Vector2>();
+        isMoving = currentMovement.x != 0 || currentMovement.y != 0;
+    }
+
+    private void SetActionPlayerMovementCanceled(InputAction.CallbackContext ctx)
+    {
+        isMoving = false;
+    }
+
+    private void SetPlayerRotationPerformed(InputAction.CallbackContext ctx)
+    {
+        currentRotationMovement = ctx.ReadValue<Vector2>();
+        isRotating = true;
+    }
+
+    private void SetPlayerMouseRotationPerformed(InputAction.CallbackContext ctx)
+    {
+        currentMouseRotationMovement = ctx.ReadValue<Vector2>();
+    }
+
+    private void SetPlayerRotationCancelled(InputAction.CallbackContext ctx)
+    {
+        isRotating = false;
+    }
+
+    private void SetPlayerMouseRotationCancelled(InputAction.CallbackContext ctx)
+    {
+        isRotating = false;
+    }
+
 
     //OnEnable is called wheen the component is toggled to true 
     void OnEnable()
