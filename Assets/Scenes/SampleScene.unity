@@ -1324,12 +1324,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4295d6b6b035d17438a84a1bb31b0d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMoving: 0
-  isRotating: 0
   playerBody: {fileID: 1842719272}
-  camera: {fileID: 963194227}
-  sensitivity: 2
-  speed: 10
+  lookSensitivity: 3
+  speed: 25
 --- !u!4 &1697052877
 Transform:
   m_ObjectHideFlags: 0
